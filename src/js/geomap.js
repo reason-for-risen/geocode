@@ -11,7 +11,7 @@ function move_to(lat, lon) {
 }
 
 
-function add_marker(lat, lon, popup_message, active) {
+function add_marker(lat, lon, popup_message) {
     let marker = L.marker(
         [lat, lon],
         {}

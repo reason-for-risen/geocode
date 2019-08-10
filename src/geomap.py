@@ -23,7 +23,7 @@ class CallHandler(QObject):
     def locate(self, lat, lon):
         logger.debug(f'Clicked at ({lat}, {lon})')
         location = self.parent.locator.from_coordinates(lat, lon)
-        self.parent.add_marker(location, active=True)
+        self.parent.add_marker(location)
 
 
 class MapView(QWebEngineView):
@@ -40,13 +40,13 @@ class MapView(QWebEngineView):
         self.page().setWebChannel(self.channel)
         self.load(QUrl.fromLocalFile(str(DEFAULT_PATH / MAP_FILE)))
 
-    def add_marker(self, location, active=False):
+    def add_marker(self, location):
 
         marker = Marker(location)
         logger.info(f'New {marker}')
 
         self.page().runJavaScript(
-            f"add_marker({marker.lat}, {marker.lon}, '{marker.popup}', {str(active).lower()});"
+            f"add_marker({marker.lat}, {marker.lon}, '{marker.popup}');"
         )
         self.markers.append(marker)
 
