@@ -1,27 +1,47 @@
-# from tempfile import TemporaryDirectory TODO: use tempfiles
 from pathlib import Path
 
-from PyQt5 import QtWidgets, QtCore, QtWebEngine, QtGui
+from PyQt5 import QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-from PyQt5.QtCore import QUrl, pyqtSlot, QObject
+from PyQt5.QtCore import Qt, QUrl, pyqtSlot, QObject
 from PyQt5.QtWebChannel import QWebChannel
 
-from src.utils import get_location
 from src.config import logger
-from src.marker import Marker
+from src.marker import Marker, Locator
 
 
 DEFAULT_PATH = Path(__file__).parent
 MAP_FILE = 'html/map.html'
 
 
+class CallHandler(QObject):
+
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
+
+    @pyqtSlot()
+    def test(self):
+        print('call received')
+
+    @pyqtSlot(float, float)
+    def locate(self, lat, lon):
+        logger.debug(f'Clicked at ({lat}, {lon})')
+        location = self.parent.locator.from_coordinates(lat, lon)
+        self.parent.add_marker(location)
+
+
 class MapView(QWebEngineView):
 
     def __init__(self, zoom=13):
         super().__init__()
+        self.locator = Locator()
 
         self.markers = []
         self.default_zoom = zoom
+        self.channel = QWebChannel()
+        self.handler = CallHandler(self)
+        self.channel.registerObject('handler', self.handler)
+        self.page().setWebChannel(self.channel)
         self.load(QUrl.fromLocalFile(str(DEFAULT_PATH / MAP_FILE)))
 
     def add_marker(self, location):
@@ -67,7 +87,8 @@ class MapWidget(QtWidgets.QWidget):
 
     def process_input(self):
         text = self.input.text()
-        location = get_location(text)
+        logger.info(f'Trying to find "{text}"')
+        location = self.view.locator.from_query(text)
         self.view.add_marker(location)
         self.view.move_to(location)
 
@@ -76,7 +97,7 @@ class MapWidget(QtWidgets.QWidget):
         self.process_input()
 
     def keyPressEvent(self, qKeyEvent):
-        if qKeyEvent.key() == QtCore.Qt.Key_Return:
+        if qKeyEvent.key() == Qt.Key_Return:
             logger.debug('Enter pressed')
             self.process_input()
 

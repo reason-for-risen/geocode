@@ -1,6 +1,19 @@
 from itertools import count
+from geopy import Location, get_geocoder_for_service, Nominatim
 
-from geopy import Location
+from src.utils import configure_ssl
+
+
+class Locator:
+    def __init__(self, service="nominatim"):
+        configure_ssl()
+        self.locator = get_geocoder_for_service(service)(user_agent='mygeoapp')
+
+    def from_query(self, query):
+        return self.locator.geocode(query)
+
+    def from_coordinates(self, latitude, longitude):
+        return self.locator.reverse((latitude, longitude))
 
 
 class Marker:
