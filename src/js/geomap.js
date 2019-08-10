@@ -1,4 +1,9 @@
 var backend;
+var layer_group = L.layerGroup().addTo(map);
+
+new QWebChannel(qt.webChannelTransport, function (channel) {
+            backend = channel.objects.handler;
+        });
 
 
 function move_to(lat, lon) {
@@ -6,11 +11,11 @@ function move_to(lat, lon) {
 }
 
 
-function add_marker(lat, lon, popup_message) {
+function add_marker(lat, lon, popup_message, active) {
     let marker = L.marker(
         [lat, lon],
         {}
-    ).addTo(map);
+    ).addTo(layer_group);
 
     let icon = L.AwesomeMarkers.icon(
         {
@@ -30,13 +35,20 @@ function add_marker(lat, lon, popup_message) {
 
     marker.bindPopup(popup);
 
+    marker.on('mouseover', function (e) {
+        this.openPopup();
+    });
+    marker.on('mouseout', function (e) {
+        this.closePopup();
+    });
+
+
 }
 
 
-new QWebChannel(qt.webChannelTransport, function (channel) {
-            backend = channel.objects.handler;
-        });
-
+function clear_markers() {
+    layer_group.clearLayers()
+}
 
 function map_clicked(e) {
     // alert("You clicked the map at " + e.latlng);
