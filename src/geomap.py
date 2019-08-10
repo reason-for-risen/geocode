@@ -9,8 +9,8 @@ from src.config import logger
 from src.marker import Marker, Locator
 
 
-DEFAULT_PATH = Path(__file__).parent
-MAP_FILE = 'html/map.html'
+DEFAULT_PATH = Path(__file__).parents[1]
+MAP_FILE = 'map/map.html'
 
 
 class CallHandler(QObject):

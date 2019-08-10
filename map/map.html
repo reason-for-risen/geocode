@@ -23,7 +23,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_c0b4fea88bc447788de068457a07b548 {
+                #map {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,25 +39,22 @@
 
 </body>
 <script>
+    var map = L.map(
+        "map",
+        {
+            center: [59.95225983128991, 30.344238281250004],
+            crs: L.CRS.EPSG3857,
+            zoom: 10,
+            zoomControl: true,
+            preferCanvas: false,
+        }
+    );
 
-            var map = L.map(
-                "map",
-                {
-                    center: [50.296933, 41.9574983],
-                    crs: L.CRS.EPSG3857,
-                    zoom: 11,
-                    zoomControl: true,
-                    preferCanvas: false,
-                }
-            );
-
-
-
-            var tile_layer = L.tileLayer(
-                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
-            ).addTo(map);
+    var tile_layer = L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+    ).addTo(map);
 
 </script>
 <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
-<script type="text/javascript" src='../js/geomap.js'></script>
+<script type="text/javascript" src='manager.js'></script>

@@ -1,5 +1,5 @@
 from itertools import count
-from geopy import Location, get_geocoder_for_service, Nominatim
+from geopy import Location, get_geocoder_for_service
 
 from src.utils import configure_ssl
 
