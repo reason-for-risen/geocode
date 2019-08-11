@@ -8,8 +8,7 @@ from PyQt5.QtWebChannel import QWebChannel
 from src.config import logger
 from src.marker import Marker, Locator
 
-
-DEFAULT_PATH = Path(__file__).parents[1]
+DEFAULT_PATH = Path(__file__).parents[1].absolute()
 MAP_FILE = 'map/map.html'
 
 
@@ -28,16 +27,16 @@ class CallHandler(QObject):
 
 class MapView(QWebEngineView):
 
-    def __init__(self, zoom=13):
+    def __init__(self):
         super().__init__()
         self.locator = Locator()
 
         self.markers = []
-        self.default_zoom = zoom
         self.channel = QWebChannel()
         self.handler = CallHandler(self)
         self.channel.registerObject('handler', self.handler)
         self.page().setWebChannel(self.channel)
+        logger.debug(f'Loading map from {DEFAULT_PATH / MAP_FILE}')
         self.load(QUrl.fromLocalFile(str(DEFAULT_PATH / MAP_FILE)))
 
     def add_marker(self, location):
