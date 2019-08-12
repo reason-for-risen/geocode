@@ -20,6 +20,7 @@ $ bash install_pipenv.sh
 ```
 
 ## Usage
+**NOTE**: Geocode requires internet connection.
 ```bash
 # run via pipenv
 $ pipenv run python3 src/geomap.py
