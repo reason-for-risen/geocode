@@ -14,7 +14,7 @@ $ cd geocode
 # install python3 and python3-pip if they are not installed
 
 # install the requirements via pipenv
-$ install_pipenv.sh
+$ bash install_pipenv.sh
 ```
 
 ## Usage
