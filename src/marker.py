@@ -2,6 +2,7 @@ from itertools import count
 from geopy import Location, get_geocoder_for_service
 
 from src.utils import configure_ssl
+from src.config import logger
 
 
 class Locator:
@@ -10,10 +11,16 @@ class Locator:
         self.locator = get_geocoder_for_service(service)(user_agent='mygeoapp')
 
     def from_query(self, query):
-        return self.locator.geocode(query)
+        logger.info(f'Trying to find location from query:\n"{query}"')
+        location = self.locator.geocode(query)
+        logger.debug(f'Retrieved location: {location}')
+        return location
 
     def from_coordinates(self, latitude, longitude):
-        return self.locator.reverse((latitude, longitude))
+        logger.info(f'Trying to find location from coordinates:\n({latitude}, {longitude})')
+        location = self.locator.reverse((latitude, longitude))
+        logger.debug(f'Retrieved location: {location}')
+        return location
 
 
 class Marker:

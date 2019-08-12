@@ -54,6 +54,9 @@ class MapView(QWebEngineView):
         logger.info(f"Moving to ({lat}, {lon})")
         self.page().runJavaScript(f'move_to({lat}, {lon});')
 
+    def location_not_found(self):
+        self.page().runJavaScript(f'alert("Location not found(");')
+
     def remove_markers(self):
         logger.info("Removing markers")
         self.page().runJavaScript(f'clear_markers();')
@@ -94,10 +97,12 @@ class MapWidget(QtWidgets.QWidget):
 
     def process_input(self):
         text = self.input.text()
-        logger.info(f'Trying to find "{text}"')
         location = self.view.locator.from_query(text)
-        self.view.add_marker(location)
-        self.view.move_to(location)
+        if location is None:
+            self.view.location_not_found()
+        else:
+            self.view.add_marker(location)
+            self.view.move_to(location)
 
     def locate_clicked(self):
         logger.debug('Locate button clicked')
