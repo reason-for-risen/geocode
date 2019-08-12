@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/reason-for-risen/geocode.svg?branch=dev)](https://travis-ci.org/reason-for-risen/geocode)
 # geocode
+Geocode is a simple desktop app that can easily find any location from queries like "red square" or "Nevsky prospect 4". It can also return the address of the clicked spot on the map! 
+
 ## Installation
 
 **NOTE**: Python 3.6 or higher is required.
