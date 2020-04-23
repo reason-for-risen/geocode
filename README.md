@@ -8,7 +8,7 @@ Geocode is a simple desktop app that can easily find any location from queries l
 
 ```bash
 # clone the repo
-$ git clone https://github.com/reason-for-risen/geocode.git
+$ git clone https://github.com/smetam/geocode.git
 
 # change the working directory to geocode
 $ cd geocode
